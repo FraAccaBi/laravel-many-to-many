@@ -9,7 +9,7 @@
                 @foreach ($posts as $post)
                 <div class="card-body d-flex align-items-center justify-content-around row">
                     <h4 class="col-2">{{$post->title}}</h4>
-                    <img class="col-2" height="60px" src="{{$post->cover_img}}" alt="">
+                    <img class="col-2" height="60px" src="{{asset('storage/' . $post->cover_img)}}" alt="">
                     <p class="col-6">{{$post->content}}</p>
 
 

@@ -49883,7 +49883,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Laravel\esercizio\resources\js\front.js */"./resources/js/front.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Laravel\laravel-many-to-many\resources\js\front.js */"./resources/js/front.js");
 
 
 /***/ })

@@ -8,6 +8,8 @@ use App\Http\Requests\PostRequest;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -42,9 +44,25 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $data = $request->all();
+        $val_data = $request->validated();
         //dd($data);
-        Post::create($data);
+
+        //generate slug
+        //$slug = Post::generateSlug($request->title);
+        //$val_data['slug']= $slug;
+        $val_data['user_id'] =Auth::id();
+
+        $request->validate(
+            [
+                'cover_img' => 'nullable|image|max:250',
+            ]
+            );
+        $path = Storage::put('post_images', $request->cover_img);
+        $val_data['cover_img'] = $path;
+
+        $new_post = Post::create($val_data);
+        $new_post->tags()->attach($request->tags);
+
         return redirect()->route('admin.posts.index')->with('message', 'Post Created Successfully');
     }
 
@@ -67,6 +85,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+
         $categories = Category::all();
         $tags = Tag::all();
         return view('admin.posts.edit', compact('post', 'categories', 'tags'));
@@ -81,9 +100,33 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $data=$request->all();
-        $post->update($data);
-        $post->tags()->sync($data['tags']);
+        $val_data = $request->validated();
+        //$slug = Post::generateSlug($request->title);
+        // old slug version
+       /*  $slug = Str::slug($request->title,'-'); */
+        //$val_data['slug'] = $slug;
+
+        if($request->hasFile('cover_image')){
+            //validation
+            $request->validate([
+                'cover_image' => 'nullable|image|max:500'
+            ]);
+            //save
+            Storage::delete($post->cover_image);
+            //take path
+            $path = Storage::put('post_images', $request->cover_image);
+
+
+            //pass the path of array
+            $val_data['cover_image'] = $path ;
+
+        };
+
+
+        $post->tags()->sync($request->tags);
+        $post->update($val_data);
+
+        //$post->tags()->sync($val_data['tags']);
         return redirect()->route('admin.posts.index')->with('message', "$post->title updated successfully");
     }
 
@@ -95,6 +138,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $post->delete($post->cover_img);
         $post->delete();
         return redirect()->route('admin.posts.index')->with('message', "$post->title deleted successfully");
     }

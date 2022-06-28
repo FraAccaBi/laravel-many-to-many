@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h2>Edit post</h2>
-    <form action="{{route('admin.posts.store')}}" method="post">
+    <form action="..." method="post" enctype="multipart/form-data">
     @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -12,7 +12,7 @@
         </div>
         <div class="mb-3">
             <label for="cover_img" class="form-label">Cover Image</label>
-            <input type="text" name="cover_img" id="cover_img" class="form-control" placeholder="https://picsum.com/... " aria-describedby="coverHelp" value="{{old('cover_img')}}">
+            <input type="file" name="cover_img" id="cover_img" class="form-control" placeholder="https://picsum.com/... " aria-describedby="coverHelp" value="{{asset('storage/' . $post->cover_img)}}">
             <small id="coverHelp" class="text-muted">Copy in here the link for your image</small>
         </div>
         <div class="mb-3">
