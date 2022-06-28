@@ -29,6 +29,9 @@ class NewPostCreated extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.posts.created');
+        return $this
+        ->from('noreply@wow.com')
+        ->subject('A new post created')
+        ->view('mail.posts.created');
     }
 }
