@@ -57,7 +57,7 @@ class PostController extends Controller
                 'cover_img' => 'nullable|image|max:250',
             ]
             );
-        $path = Storage::put('post_images', $request->cover_img);
+        $path = Storage::put('post_img', $request->cover_img);
         $val_data['cover_img'] = $path;
 
         $new_post = Post::create($val_data);
@@ -106,21 +106,21 @@ class PostController extends Controller
        /*  $slug = Str::slug($request->title,'-'); */
         //$val_data['slug'] = $slug;
 
-        if($request->hasFile('cover_image')){
+
             //validation
             $request->validate([
                 'cover_image' => 'nullable|image|max:500'
             ]);
             //save
-            Storage::delete($post->cover_image);
+            Storage::delete($post->cover_img);
             //take path
-            $path = Storage::put('post_images', $request->cover_image);
+            $path = Storage::put('post_img', $request->cover_img);
 
 
             //pass the path of array
-            $val_data['cover_image'] = $path ;
+            $val_data['cover_img'] = $path ;
 
-        };
+
 
 
         $post->tags()->sync($request->tags);
