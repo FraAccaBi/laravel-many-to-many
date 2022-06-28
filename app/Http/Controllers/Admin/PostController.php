@@ -44,8 +44,10 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        /* $data = $request->all();
+        dd($data); */
         $val_data = $request->validated();
-        //dd($data);
+        //dd($val_data);
 
         //generate slug
         //$slug = Post::generateSlug($request->title);

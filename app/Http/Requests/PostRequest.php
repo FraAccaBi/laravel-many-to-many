@@ -24,7 +24,11 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|unique:posts|max:250',
+            'content' => 'nullable',
+            'cover_img' =>'nullable',
+            'category' => 'nullable',
+            'tags'=>'nullable'
         ];
     }
 }
